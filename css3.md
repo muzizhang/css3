@@ -134,5 +134,31 @@ input:disabled {
 }
 ~~~
 
-### transform
+### Transform
+
+~~~html
+//  transform  2D 3D 变形转换  
+//    菱形
+<div class="diamond"></div>
+//    平行四边形
+<div class="parallel"></div>
+~~~
+
+~~~css
+.diamond {
+    width: 200px;
+    height: 200px;
+    background: #6a6;
+    margin: 100px auto;
+    transform: rotate(45deg);
+}
+.parallel {
+    width: 200px;
+    height: 100px;
+    background: #6a6;
+    margin: 100px auto;
+    //               左右倾斜    上下倾斜
+    transform: skew(20deg 20deg);
+}
+~~~
 
