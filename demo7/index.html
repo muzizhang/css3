@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        /* 1 */
+        /* 一个正方形   两个长方形 */
+        .heart {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            transform: rotate(45deg);
+            background: red;
+            margin: 50px;
+        }
+        .heart::before {
+            content: '';
+            width: 60px;
+            height: 50px;
+            border-radius: 50% 50% 0 0;
+            transform: rotate(-90deg);
+            position: absolute;
+            top: 5px;
+            left: -55px;
+            background: red;
+        }
+        .heart::after {
+            content: '';
+            width: 60px;
+            height: 50px;
+            border-radius: 50% 50% 0 0;
+            background: red;
+            position: absolute;
+            top: -50px;
+            left: 0;
+        }
+
+        .egg {
+            width: 50px;
+            height: 80px;
+            background: rgb(197, 197, 59);  
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        }
+    </style>
+</head>
+<body>
+    <div class="heart"></div>
+    <div class="egg"></div>
+</body>
+</html>

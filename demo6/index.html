@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>五边形</title>
+    <style>
+      .demo {
+        width: 50px;
+        height: 50px;
+        border-top: 50px solid aquamarine;
+        border-bottom: 50px solid blueviolet;
+        border-left: 50px solid antiquewhite;
+        border-right: 50px solid palevioletred;
+      }
+      .demo1 {
+        width: 50px;
+        height: 0;
+        border-top: 55px solid aquamarine;
+        /* border-bottom: 50px solid blueviolet; */
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        margin-top: 100px;
+        position: relative;
+      }
+      .demo1::before {
+        content: "";
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: -95px;
+        left: -25px;
+        border-bottom: 40px solid aquamarine;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo"></div>
+    <div class="demo1"></div>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .demo {
+            width: 0px;
+            margin: 300px auto 0;
+            border-left: 100px solid #ccc;
+            border-right: 100px solid #faaf;
+            border-top: 100px solid aqua;
+            border-bottom: 100px solid antiquewhite;
+            position: relative;
+        }
+        .demo::before {
+            content: '';
+            width: 0px;
+            position: absolute;
+            border-left: 100px solid #ccc;
+            border-right: 100px solid #faaf;
+            border-top: 100px solid aqua;
+            border-bottom: 100px solid antiquewhite;
+            top: -324px;
+            left: -100px;
+        }
+        .demo::after {
+            content: '';
+            width: 0px;
+            margin: 300px auto 0;
+            border-left: 100px solid #ccc;
+            border-right: 100px solid #faaf;
+            border-top: 100px solid aqua;
+            border-bottom: 100px solid antiquewhite;   
+            position: absolute;
+            top: -170px;
+            left: -98px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo"></div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>six-star</title>
+    <style>
+        .demo {
+            width: 0px;
+            margin: 300px auto 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 200px solid red;
+            position: relative;
+        }
+        .demo::before {
+            content: '';
+            width: 0px;
+            position: absolute;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-top: 200px solid red;
+            top: 60px;
+            left: -100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo"></div>
+</body>
+</html>

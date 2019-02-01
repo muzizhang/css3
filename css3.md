@@ -73,21 +73,21 @@ input:disabled {
   - 什么是结构伪类选择器？
     - 简化了html文本结构，减少class 和 id 的使用
     - 新增加的选择器可以很好的选择重复的标签
-  -  :first-child 选择某个元素的第一个子元素
-  -  :last-child 选择某个元素的最后一个子元素
-  -  :nth-child( [数字或表达式] )  选择某个元素的一个或多个特定的子元素
-    - even   偶数
-    - odd     奇数
-    - n+1
-  -  :nth-last-child()  选择某个元素的一个或多个特定的子元素，从这个元素的  最后一个子元素开始算
-  -  :nth-of-type()  选择指定的元素    [限定类型]
-  -  :nth-last-of-type()   选择指定的元素，从元素的最后一个开始计算
-  -  :first-of-type()    选择一个上级元素下的第一个同类子元素
-  -  :last-of-type()     选择一个上级元素的最后一个同类子元素
-  -  :only-child      选择的元素是它的父元素的唯一一个子元素
-  -  :only-of-type    选择一个元素是它的上级元素的唯一一个相同类型的子元素                                         ?????
-  -  :empty    选择的元素里没有任何内容
-    - <li></li>
+  - :first-child 选择某个元素的第一个子元素
+  - :last-child 选择某个元素的最后一个子元素
+  - :nth-child( [数字或表达式] )  选择某个元素的一个或多个特定的子元素
+      - even   偶数
+      - odd     奇数
+      - n+1
+  - :nth-last-child()  选择某个元素的一个或多个特定的子元素，从这个元素的  最后一个子元素开始算
+  - :nth-of-type()  选择指定的元素    [限定类型]
+  - :nth-last-of-type()   选择指定的元素，从元素的最后一个开始计算
+  - :first-of-type()    选择一个上级元素下的第一个同类子元素
+  - :last-of-type()     选择一个上级元素的最后一个同类子元素
+  - :only-child      选择的元素是它的父元素的唯一一个子元素
+  - :only-of-type    选择一个元素是它的上级元素的唯一一个相同类型的子元素                                         ?????
+  - :empty    选择的元素里没有任何内容
+      - <li></li>
 
 ### 伪元素
 
@@ -134,6 +134,12 @@ input:disabled {
 }
 ~~~
 
+border-radius
+
+border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+​                                   x轴                                      y轴
+
 ### Transform
 
 ~~~html
@@ -160,5 +166,85 @@ input:disabled {
     //               左右倾斜    上下倾斜
     transform: skew(20deg 20deg);
 }
+~~~
+
+参数：
+
+**转换**
+
+- `translate(x,y)`      定义2D转换
+- `translate3d(x,y,z)`        定义3D转换
+- `translateX()`                 定义X转换
+- `translateY()`                 定义Y转换
+- `translateZ()`                 定义Z转换
+
+**缩放**
+
+- `scale(x,y)`              定义2D缩放
+- `scale3d(x,y,z)`          定义3D缩放
+- `scaleX(x)`
+- `scaleY(y)`
+- `scaleZ(z)`
+
+**旋转**
+
+- `rotate(angle)`              角度    例： `rotate(30deg)`
+- `rotate3d()`
+- `rotateX()`
+- `rotateY()`
+- `rotateZ()`
+
+**倾斜转换**
+
+- `skew(x-angle,y-angle)`       2d 倾斜转换
+- `skewX(angle)`
+- `skewY(angle)`
+
+**透视视图**
+
+- `perspective(n)`                 为3D转换元素定义透视视图
+
+#### Transform-origin
+
+设置旋转元素的基点位置。
+
+该属性必须与 transform 属性一同使用。
+
+### opacity   透明
+
+~~~
+		 值  0-1   继承（继承父级的透明度）
+opacity: value/inherit
+
+0：  完全透明
+1：  不透明
+~~~
+
+### 颜色模式
+
+- RGBA
+
+R： 红色值。正整数|百分数
+
+G： 绿色值。正整数|百分数
+
+B： 蓝色值。正整数|百分数
+
+A： Alpha 透明度。取值0~1之间
+
+- hsla
+
+H：Hue（色调）。0/360 表示红色，120 表示绿色，240表示蓝色，也可取其他数值来指定颜色。取值 0-360
+
+S： 饱和度（Saturation）。取值：0.0%-100.0%
+
+L： 亮度（Lightness）            0.0%~100.0%
+
+A： Alpha 透明度    0-1
+
+~~~
+RGBA 与 hsla 的区别：
+当 RGBA 的透明度逐渐变浅时，相关的信息颜色都会变浅
+当 hsla 的透明度逐渐变浅时，相关的信息颜色不会进行变化
 ~~~
 

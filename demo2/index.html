@@ -3,8 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>伪类选择器</title>
+    <style> 
+        .element {
+            width: 95%;
+            margin: 20px auto;
+        }
+        .demo {
+            width: 300px;
+            margin: 20px 200px;
+            height: 25px;
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        .demo li {
+            float: left;
+            list-style: none;
+            padding: 0 5px;
+            border: 1px solid #ccc;
+            margin-right: 7px;
+            border-radius: 50%;
+            
+        }
+        .demo a {
+            text-decoration: none;
+        }
+        .demo li:first-child {
+            background-color: #f63;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="element">
+        <ul>
+            <li>:first-child</li>
+            <li>:last-child</li>
+            <li>:nth-child()</li>
+            <li>:nth-last-child()</li>
+            <li>:nth-of-type()</li>
+            <li>:nth-last-of-type</li>
+            <li>:first-of-type()</li>
+            <li>:last-of-type()</li>
+            <li>:only-child</li>
+            <li>:only-of-type</li>
+            <li>:empty    空元素</li>
+        </ul>
+    </div>
+
+    <div class="demo">
+        <li><a href="">1</a></li>
+        <li><a href="">2</a></li>
+        <li><a href="">3</a></li>
+        <li><a href="">4</a></li>
+        <li><a href="">5</a></li>
+        <li><a href="">6</a></li>
+        <li><a href="">7</a></li>
+        <li><a href="">8</a></li>
+        <li><a href="">9</a></li>
+        <li><a href="">10</a></li>
+    </div>
 </body>
 </html>
