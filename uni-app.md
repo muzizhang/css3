@@ -170,7 +170,248 @@ uni-app 支持如下应用生命周期函数：
 
 #### 页面栈
 
-页面以栈的形式管理当前所有页面，当发生路由切换的时候，页面栈的表现如下：
+页面`以栈的形式管理当前所有页面`，当**发生路由切换**的时候，页面栈的表现如下：
+
+| 路由方式   | 页面栈表现                        | 触发时机                                                     |
+| ---------- | --------------------------------- | ------------------------------------------------------------ |
+| 初始化     | 新页面入栈                        | uni-app 打开的第一个页面                                     |
+| 打开新页面 | 新页面入栈                        | 调用 API [uni.navigateTo](https://uniapp.dcloud.io/api/router?id=navigateto)、使用组件 [ <navigator open-type="navigateTo"/> ](https://uniapp.dcloud.io/component/navigator?id=navigator) |
+| 页面重定向 | 当前页面出栈，新页面入栈          | 调用 API [uni.redirectTo]()、使用组件 [ <navigator open-type="redirectTo"/> ]() |
+| 页面返回   | 页面不断出栈，直到目标返回页      | 调用 API [uni.navigateBack]() 、使用组件 [<navigator open-type="navigateBack"/>]() 、用户按左上角返回按钮，安卓用户点击物理 back 按钮 |
+| tab 切换   | 页面全部出栈，只留下新的 tab 页面 | 调用 API [uni.switchTab]() 、使用组件 [<navigator open-type="switchTab"/>]() 、用户切换 tab |
+| 重加载     | 页面全部出栈，只留下新的页面      | 调用 API [uni.reLaunch]() 、使用组件 [<navigator open-type="reLaunch"/>]() |
+
+**getCurrentPages()**
+
+`getCurrentPages()` 函数用于`获取当前页面栈的实例`，**以数组形式按栈的顺序给出**，第一个元素为首页，最后一个元素为当前页面。
+
+**注：** `getCurrentPages()` 仅用于展示页面栈的情况，请勿修改页面栈，以免造成页面状态错误。
+
+每个页面实例的方法属性列表：
+
+| 方法                  | 描述                            | 平台说明 |
+| --------------------- | ------------------------------- | -------- |
+| page.$getAppWebview() | 获取当前页面的 webview 对象实例 | 5+App    |
+| page.route            | 获取当前页面的路由              |          |
+
+- `navigateTo`、`redirectTo` 只能打开 非 tabBar 页面
+- `switchTab` 只能打开 `tabBar` 页面
+- `reLaunch`  可以打开任意页面
+- 页面底部的 `tabBar` 由页面决定，即只要是定义为 `tabBar` 的页面，地步都有 tabBar
+- 不能在 `App.vue` 里面进行页面跳转
+
+**$getAppWebview()**
+
+`uni-app` 在 `getCurrentPages()` 获得的页面里内置一个方法 `$getAppWebview()` 可以得到当前 webview 的对象实例，从而获得 webview 的 style、id 等属性，也可设置 webview 的style。
+
+~~~js
+var pages = getCurrentPages();
+var page = pages[pages.length - 1];
+// #ifdef APP-PLUS
+var currentWebview = page.$getAppWebview()；
+console.log(currentWebview.id) // 获得当前 webview 的 id
+currentWebview.setStyle({ // 设置当前 webview 的 style
+    titleNView: {
+        titleText: 'test'
+    }
+})
+~~~
+
+#### 运行环境判断
+
+- `process.env.NODE_ENV`  判断**当前环境**是开发环境还是生产环境（HBuilderX 中，点击运行编译出来的代码是开发环境， 点击发行编译出来的代码是生产环境）
+
+- `uni.getSystemInfoSync().platform` 判断**客户端环境**是 Android、iOS 还是小程序开发工具（百度小程序、微信小程序、支付宝小程序 开发工具中使用 `uni.getSystemInfoSync().platform` 返回值均为 devtools）
+
+- 代码块
+  - HBuilderX 中的 代码块 `uEnvDev`、`uEnvProd` 可以快速生成对应 `development`、`production`  的 运行环境判定代码
+
+#### 页面样式与布局
+
+- **upx** 作为默认尺寸单位，upx 是相对于基准宽度的单位，可以根据屏幕宽度进行自适应。
+  - uni-app 规定屏幕基准宽度 750upx。
+
+- 开发者可以通过设计稿基准宽度计算页面元素 upx 值，设计稿 1px 与 框架样式 1upx 转换公式：
+  - `设计稿 1px / 设计稿基准宽度 = 框架样式 1upx / 750upx`
+- 换言之，页面元素宽度 在 `uni-app` 中的宽度计算公式：
+  - `框架样式（upx） = 750 * 元素在设计稿中的宽度 / 设计稿基准宽度`
+
+~~~js
+// 若设计稿宽度为 640px，元素 A 在设计稿上的宽度为 100px ，那么元素 A 在 uni-app  里面的宽度应该设为：
+ 750 * 100 / 640 = 117upx  // 框架样式
+~~~
+
+##### upx2px
+
+动态绑定的 `style` 不支持 直接使用 `upx`
+
+~~~js
+//  静态 upx 赋值生效
+<view class="test" style="width:200upx;"></view>
+//  动态绑定不生效
+<view class="test" :style="{width: winWidth + 'upx;'}"></view>
+~~~
+
+`uni.upx2px(Number)` 转换为 px 后再赋值
+
+~~~js
+<template>
+    <view class="test" style="width:200px;"></view>
+</template>
+<script>
+export default({
+    computed: {
+		setWidth(){
+            return uni.upx2px(200) + 'px';
+		}
+    }
+})
+</script>
+~~~
+
+##### 样式导入
+
+`@import` 语句可以导入外联样式表，@import  后需要导入的外联样式表的**相对路径**，用 `;` 表示语句结束
+
+~~~js
+<style>
+    @import '相对路径';
+</style>
+~~~
+
+##### 内联样式
+
+框架组件支持使用 style、class 属性来控制组件的样式。
+
+- style : 静态的样式统一写到 class 中。style 接收动态的样式，在运行时会进行解析，避免将静态的样式写进 style 中，以免影响渲染速度
+- class ： 用于指定样式规则，其**属性值**是**样式规则中类选择器名**（样式类名）的集合，样式类名用空格分隔
+
+##### 选择器
+
+- .class
+- #id
+- element
+- element, element **????**
+- ::after （伪元素）  元素后
+- ::before   （伪元素）元素前
+
+##### 全局样式与局部样式
+
+在 `App.vue` 中定义的样式为 全局样式，作用于每一个页面
+
+在 `pages` 目录下的 vue 文件中定义的样式为局部样式，只作用在对应的页面，并会**覆盖App.vue 中相同的选择器**
+
+##### css 变量
+
+uni-app 提供内置 CSS 变量
+
+| CSS 变量            | 描述                     | 5 + App                              | 小程序 | H5                 |
+| ------------------- | ------------------------ | ------------------------------------ | ------ | ------------------ |
+| --status-bar-height | 系统状态栏高度           | 系统状态栏高度（getStatusbarHeight） | 25px   | 0                  |
+| --window-top        | 内容区域距离`顶部`的距离 | 0                                    | 0      | NavigationBar 高度 |
+| --window-bottom     | 内容区域距离`底部`的距离 | 0                                    | 0      | TabBar 高度        |
+
+eg： `var(--status-bar-height)`   状态栏高度
+
+~~~css
+<style>
+.index {
+    height: var(--status-bar-height);
+}
+</style>
+~~~
+
+##### 固定值
+
+以下组件的高度是固定的，不可修改
+
+| 组件          | 描述       | 5+App | H5   |
+| ------------- | ---------- | ----- | ---- |
+| NavigationBar | 导航栏     | 44px  | 44px |
+| TabBar        | 底部选项卡 | 56px  | 50px |
+
+##### Flex 布局
+
+建议使用 Flex 布局，文档 [A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
+##### 背景图片
+
+支持使用 在 css 里设置背景图片，使用方式与普通 `web` 项目相同
+
+- 支持 base64 格式图片
+- 支持网络路径图片
+- `uni-app` 使用本地路径图片：
+  - 图片小于 40kb，`uni-app` 会自动将其转化为 base64 格式
+  - 图片大于等于 40kb，需要开发者自己将其转换为 base64 格式使用或将其挪用到服务器上，从网络地址引用
+  - 本地图片的引用路径仅支持以 **`~@` 开头的绝对路径（不支持相对路径）**
+
+~~~css
+.test {
+    background-image: url('~@/static/logo.png');
+}
+~~~
+
+##### 字体图标
+
+支持使用字体图标，使用方式与普通 `web` 项目相同：
+
+- 支持 base64 格式字体图标
+- 支持网络路径字体图标
+- **网络路径必须加协议头  https**
+- 从 `http://www.iconfont.cn` 上拷贝的代码，默认是没加协议头的
+-  `uni-app` 本地路径图标字体支持情况
+  - 字体文件小于 40kb，`uni-app` 会自动将其转化为 base64 格式；
+  - 字体文件大于等于 40kb， 需开发者自己转换，否则使用将不生效；
+  - 字体文件的引用路径仅支持以 ~@ 开头的绝对路径（不支持相对路径）。
+
+##### `<template/> && <block/>`
+
+支持在 template 模板中嵌套 `<template/>` 和 `<block/>`，用来进行 [条件渲染](https://uniapp.dcloud.io/use?id=%E6%9D%A1%E4%BB%B6%E6%B8%B2%E6%9F%93) && [列表渲染](https://uniapp.dcloud.io/use?id=列表渲染)。
+
+并不是一个组件，仅仅是一个包装元素，不会再页面中做任何渲染，只接受控制属性
+
+#### NPM 支持
+
+支持使用 npm 安装第三方包
+
+- 初始化 npm 工程
+
+~~~cmd
+若项目之前未使用 npm 管理依赖（项目根目录下无 package.json 文件），先在项目根目录执行命令初始化 npm 工程：
+
+npm init -y
+~~~
+
+- 安装依赖
+
+~~~js
+在项目根目录执行命令安装 npm 包：
+
+npm install packageName --save
+~~~
+
+- 使用
+
+~~~
+安装完即可使用 npm 包，js 中引入 npm 包
+
+import package from 'packageName'
+const package = require('packageName')
+~~~
+
+- node_modules 目录必须在项目根目录下
+- 支持安装 mpvue 组件，不支持直接使用 vue 组件和小程序自定义组件，[小程序组件](https://uniapp.dcloud.io/frame?id=%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%BB%84%E4%BB%B6%E6%94%AF%E6%8C%81)
+- 支持安装js 模板，安装的模板以及依赖的模板使用 的 API 必须是 uni-app 已有的 API（兼容小程序 API） ，支持 `高德地图微信小程序SDK`
+
+#### TypeScript 支持
+
+**在 vue 文件的 script 节点声明 lang="ts"**
+
+声明 `lang="ts"` 后，该 vue 文件 import 进来的所有 vue 组件，均需要使用 ts 编写
+
+
+
+
 
 
 
