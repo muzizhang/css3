@@ -96,3 +96,12 @@ m2({})   //  undefined, undefined
 - 不可以当作构造函数，不可以使用 new  命令，否则会抛出一个错误
 - **不可以使用 arguments 对象，该对象在函数体内不存在。**如果需要使用，可以用 rest 参数代替
 - 不可以使用 `yield` 命令，因此箭头函数不能用作  Generator 函数
+
+
+
+
+
+## Symbol
+
+
+
